@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
@@ -12,28 +13,31 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.android.play.core.ktx.requestAppUpdateInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+/** Result of a manual "Check for updates". */
+enum class UpdateCheckResult { UP_TO_DATE, UPDATE_STARTED, READY_TO_INSTALL, UNAVAILABLE }
+
 /**
  * Google Play In-App Updates.
  *
- * - On every app start/resume, asks Play if a newer version is available.
- * - Important updates (priority 4–5 in Play Console, or older than [IMMEDIATE_AFTER_DAYS] days)
- *   use a full-screen IMMEDIATE update the user must finish.
- * - Other updates download in the background (FLEXIBLE); when ready, the app shows a "Restart" snackbar.
- * - An immediate update that was interrupted is resumed when the user comes back.
+ * - Checks on every resume (not only cold start). Which flow to use is decided by [UpdatePolicy]:
+ *   important updates (priority 4–5, or 7+ days old) are IMMEDIATE (full screen), others FLEXIBLE (background).
+ * - An IMMEDIATE update the user left is resumed on the next resume.
+ * - A downloaded FLEXIBLE update shows the "Update ready – Restart" snackbar on every resume, and is installed
+ *   automatically when the app goes to the background.
+ * - The FLEXIBLE prompt is shown at most once per app session, so it doesn't nag on every resume.
  *
- * Only works for apps installed from Google Play (not for sideloaded debug APKs).
- * To set priority, upload with the Play Developer API `inAppUpdatePriority` (0–5); Play Console defaults to 0.
+ * Only works for apps installed from Google Play (not for sideloaded debug APKs). Users still on an old version
+ * without this code get the new version through Play's own auto-update.
  */
 class UpdateManager(private val activity: ComponentActivity) {
 
     companion object {
         private const val TAG = "SweepUpdate"
-        const val IMMEDIATE_PRIORITY = 4
-        const val IMMEDIATE_AFTER_DAYS = 7
     }
 
     private val manager: AppUpdateManager = AppUpdateManagerFactory.create(activity)
@@ -41,6 +45,10 @@ class UpdateManager(private val activity: ComponentActivity) {
     private val _readyToInstall = MutableStateFlow(false)
     /** True when a flexible update has downloaded and needs a restart to install. */
     val readyToInstall: StateFlow<Boolean> = _readyToInstall.asStateFlow()
+
+    private val _resumes = MutableStateFlow(0)
+    /** Increases on every resume, so the UI can show the "Update ready" snackbar again. */
+    val resumes: StateFlow<Int> = _resumes.asStateFlow()
 
     private val launcher: ActivityResultLauncher<IntentSenderRequest> =
         activity.registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
@@ -51,34 +59,65 @@ class UpdateManager(private val activity: ComponentActivity) {
         if (state.installStatus() == InstallStatus.DOWNLOADED) _readyToInstall.value = true
     }
 
-    private var asked = false
+    private var flexibleAsked = false
 
-    /** Call from onCreate. Checks once per app start. */
-    fun check() {
+    fun onCreate() {
         manager.registerListener(listener)
-        manager.appUpdateInfo.addOnSuccessListener { info ->
-            if (asked || info.updateAvailability() != UpdateAvailability.UPDATE_AVAILABLE) return@addOnSuccessListener
-            val stale = (info.clientVersionStalenessDays() ?: 0) >= IMMEDIATE_AFTER_DAYS
-            val important = info.updatePriority() >= IMMEDIATE_PRIORITY || stale
-            val type = when {
-                important && info.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE) -> AppUpdateType.IMMEDIATE
-                info.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE) -> AppUpdateType.FLEXIBLE
-                info.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE) -> AppUpdateType.IMMEDIATE
-                else -> return@addOnSuccessListener
-            }
-            asked = true
-            manager.startUpdateFlowForResult(info, launcher, AppUpdateOptions.newBuilder(type).build())
-        }.addOnFailureListener { Log.i(TAG, "Update check failed (normal for non-Play installs): ${it.message}") }
     }
 
-    /** Call from onResume: shows a finished download, and resumes an interrupted immediate update. */
+    /** Call from onResume. */
     fun onResume() {
-        manager.appUpdateInfo.addOnSuccessListener { info ->
-            if (info.installStatus() == InstallStatus.DOWNLOADED) _readyToInstall.value = true
-            if (info.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
-                manager.startUpdateFlowForResult(info, launcher, AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build())
+        _resumes.value += 1
+        manager.appUpdateInfo
+            .addOnSuccessListener { info -> handle(info, manual = false) }
+            .addOnFailureListener { Log.i(TAG, "Update check failed (normal for non-Play installs): ${it.message}") }
+    }
+
+    /** Call from onStop: installs a downloaded flexible update silently while the app is in the background. */
+    fun onStop() {
+        if (_readyToInstall.value) manager.completeUpdate()
+    }
+
+    /** Settings > Check for updates. */
+    suspend fun checkNow(): UpdateCheckResult = try {
+        handle(manager.requestAppUpdateInfo(), manual = true)
+    } catch (e: Exception) {
+        Log.i(TAG, "Manual update check failed: ${e.message}")
+        UpdateCheckResult.UNAVAILABLE
+    }
+
+    private fun handle(info: AppUpdateInfo, manual: Boolean): UpdateCheckResult {
+        if (info.installStatus() == InstallStatus.DOWNLOADED) {
+            _readyToInstall.value = true
+            return UpdateCheckResult.READY_TO_INSTALL
+        }
+        // An immediate update the user left: bring it back.
+        if (info.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+            start(info, AppUpdateType.IMMEDIATE)
+            return UpdateCheckResult.UPDATE_STARTED
+        }
+        val flow = UpdatePolicy.decide(
+            updateAvailable = info.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE,
+            priority = info.updatePriority(),
+            stalenessDays = info.clientVersionStalenessDays(),
+            immediateAllowed = info.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE),
+            flexibleAllowed = info.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE),
+        )
+        return when (flow) {
+            UpdateFlow.NONE -> UpdateCheckResult.UP_TO_DATE
+            UpdateFlow.IMMEDIATE -> { start(info, AppUpdateType.IMMEDIATE); UpdateCheckResult.UPDATE_STARTED }
+            UpdateFlow.FLEXIBLE -> {
+                if (manual || !flexibleAsked) {
+                    flexibleAsked = true
+                    start(info, AppUpdateType.FLEXIBLE)
+                }
+                UpdateCheckResult.UPDATE_STARTED
             }
         }
+    }
+
+    private fun start(info: AppUpdateInfo, type: Int) {
+        manager.startUpdateFlowForResult(info, launcher, AppUpdateOptions.newBuilder(type).build())
     }
 
     /** Installs a downloaded flexible update (the app restarts). */

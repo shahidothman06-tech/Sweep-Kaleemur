@@ -243,6 +243,21 @@
     <string name="pro_choose_plan">Choose a plan</string>
     <string name="pro_price_loading">Loading price…</string>
     <string name="pro_restored">Purchases checked</string>
+    <string name="status_no_permission">No permission</string>
+    <string name="grant_permission">Allow</string>
+    <string name="detail_unknown">Unknown</string>
+    <string name="exit_title">Leave Sweep?</string>
+    <string name="exit_subtitle">Scan again before you check in to your next room.</string>
+    <string name="exit_stay">Stay</string>
+    <string name="exit_exit">Exit</string>
+    <string name="exit_rate">Enjoying Sweep? Rate us</string>
+    <string name="settings_check_updates">Check for updates</string>
+    <string name="update_checking">Checking for updates…</string>
+    <string name="update_latest">You have the latest version.</string>
+    <string name="update_available">An update is available.</string>
+    <string name="update_unavailable">Updates come from Google Play. Install the app from Google Play to get them.</string>
+    <string name="intro_brand" translatable="false">Sweep</string>
+    <string name="intro_tagline">Hidden Camera Detector</string>
     <string name="update_ready">Update ready</string>
     <string name="update_restart">Restart</string>
     <string name="pro_period_month">/ month</string>

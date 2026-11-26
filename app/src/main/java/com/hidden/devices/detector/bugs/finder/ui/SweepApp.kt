@@ -4,6 +4,16 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeOut
+import com.hidden.devices.detector.bugs.finder.ui.screens.IntroScreen
+import com.hidden.devices.detector.bugs.finder.ui.screens.ExitSheet
+import com.hidden.devices.detector.bugs.finder.update.UpdateCheckResult
+import androidx.activity.compose.BackHandler
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.runtime.mutableStateOf
@@ -105,11 +115,12 @@ private val TABS = listOf(
 fun SweepApp(vm: AppViewModel = viewModel(), updates: UpdateManager? = null) {
     val nav = rememberNavController()
     val snackbar = remember { SnackbarHostState() }
-    // A downloaded (flexible) Play update: offer a restart to install it.
+    // A downloaded (flexible) Play update: offer a restart to install it, again on every resume.
     val updateReady = updates?.readyToInstall?.collectAsStateWithLifecycle()?.value == true
+    val resumes = updates?.resumes?.collectAsStateWithLifecycle()?.value ?: 0
     val updateText = stringResource(R.string.update_ready)
     val restartText = stringResource(R.string.update_restart)
-    LaunchedEffect(updateReady) {
+    LaunchedEffect(updateReady, resumes) {
         if (updateReady) {
             val r = snackbar.showSnackbar(updateText, actionLabel = restartText, duration = SnackbarDuration.Indefinite)
             if (r == SnackbarResult.ActionPerformed) updates.completeUpdate()
@@ -139,6 +150,16 @@ fun SweepApp(vm: AppViewModel = viewModel(), updates: UpdateManager? = null) {
     val isPro by vm.billing.isPro.collectAsStateWithLifecycle()
     val back: () -> Unit = { nav.popBackStack() }
     val toPro: () -> Unit = { nav.navigate(Routes.PRO) }
+    // Animated intro after the system splash: cold start only (saved state skips it on recreation).
+    var showIntro by rememberSaveable { mutableStateOf(true) }
+    var showExit by rememberSaveable { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    val checkingText = stringResource(R.string.update_checking)
+    val latestText = stringResource(R.string.update_latest)
+    val availableText = stringResource(R.string.update_available)
+    val unavailableText = stringResource(R.string.update_unavailable)
+
+    Box(Modifier.fillMaxSize()) {
 
     Scaffold(
         containerColor = Sweep.Bg,
@@ -150,7 +171,7 @@ fun SweepApp(vm: AppViewModel = viewModel(), updates: UpdateManager? = null) {
             // as tall as the system navigation bar, so content (buttons) never goes under the phone's nav buttons.
             Column(if (hasTabs) Modifier else Modifier.navigationBarsPadding()) {
                 // Banner only on Home, Results and Reports. Never on splash, scan, lens, paywall or during permission prompts.
-                if (route in AD_ROUTES && !askingPermission) AdBanner(isPro)
+                if (route in AD_ROUTES && !askingPermission && !showIntro) AdBanner(isPro)
                 if (hasTabs) BottomBar(nav, route)
             }
         },
@@ -205,6 +226,23 @@ fun SweepApp(vm: AppViewModel = viewModel(), updates: UpdateManager? = null) {
                         onPro = toPro,
                         onPrivacy = { nav.navigate(Routes.PRIVACY) },
                         onHelp = { nav.navigate(Routes.HELP) },
+                        onCheckUpdates = {
+                            scope.launch {
+                                snackbar.showSnackbar(checkingText)
+                            }
+                            scope.launch {
+                                val r = updates?.checkNow() ?: UpdateCheckResult.UNAVAILABLE
+                                snackbar.currentSnackbarData?.dismiss()
+                                snackbar.showSnackbar(
+                                    when (r) {
+                                        UpdateCheckResult.UP_TO_DATE -> latestText
+                                        UpdateCheckResult.UPDATE_STARTED -> availableText
+                                        UpdateCheckResult.READY_TO_INSTALL -> updateText
+                                        UpdateCheckResult.UNAVAILABLE -> unavailableText
+                                    },
+                                )
+                            }
+                        },
                     )
                 }
                 composable(Routes.LANGUAGE) { LanguageScreen(vm, firstLaunch = false, onDone = back) }
@@ -215,7 +253,28 @@ fun SweepApp(vm: AppViewModel = viewModel(), updates: UpdateManager? = null) {
         }
     }
 
-    if (askRating && route != Routes.SCAN) RateDialog(vm)
+    if (askRating && route != Routes.SCAN && !showIntro) RateDialog(vm)
+
+    // Full window (not inside the Scaffold insets), so its first frame lines up with the system splash.
+    AnimatedVisibility(showIntro, enter = EnterTransition.None, exit = fadeOut(tween(250))) {
+        IntroScreen(onDone = { showIntro = false })
+    }
+
+    // Back on Home: "Leave Sweep?" sheet instead of closing straight away. Other screens keep normal back.
+    BackHandler(enabled = route == Routes.HOME && !showIntro && !showExit) { showExit = true }
+    if (showExit) {
+        ExitSheet(
+            showRate = vm.prefs.completedScans >= 3 && !vm.prefs.rateAnswered,
+            onStay = { showExit = false },
+            onExit = { showExit = false; context.findActivity()?.finish() },
+            onRate = {
+                showExit = false
+                vm.ratingAnswered()
+                scope.launch { Actions.rate(context) }
+            },
+        )
+    }
+    }
 }
 
 private fun startScan(vm: AppViewModel, nav: NavHostController) {

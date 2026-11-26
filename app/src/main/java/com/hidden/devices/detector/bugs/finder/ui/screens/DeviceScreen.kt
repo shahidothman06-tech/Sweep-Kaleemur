@@ -67,7 +67,7 @@ fun DeviceScreen(vm: AppViewModel, id: String, onBack: () -> Unit, onLens: () ->
                     val maker = d.onvif?.manufacturer ?: d.ssdp?.manufacturer
                     val model = d.onvif?.model ?: d.ssdp?.model
                     InfoRow(stringResource(R.string.detail_ip), d.ip)
-                    InfoRow(stringResource(R.string.detail_maker), maker ?: none)
+                    InfoRow(stringResource(R.string.detail_maker), maker ?: stringResource(R.string.detail_unknown))
                     if (model != null) InfoRow(stringResource(R.string.detail_model), model)
                     InfoRow(stringResource(R.string.detail_ports), d.openPorts.joinToString(", ") { it.port.toString() }.ifEmpty { none })
                     val by = buildList {

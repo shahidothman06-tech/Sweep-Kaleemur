@@ -44,6 +44,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.compose.LifecycleResumeEffect
+import com.hidden.devices.detector.bugs.finder.ui.Actions
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hidden.devices.detector.bugs.finder.R
@@ -69,7 +71,18 @@ fun LensScreen(vm: AppViewModel, onBack: () -> Unit, onPro: () -> Unit) {
     var granted by remember {
         mutableStateOf(ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
     }
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted = it }
+    // If the user taps Allow but Android no longer shows the prompt (denied twice), open the app settings instead.
+    val camContext = LocalContext.current
+    var userAsked by remember { mutableStateOf(false) }
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
+        granted = it
+        if (!it && userAsked) Actions.openAppSettings(camContext)
+    }
+    // Re-check when coming back from the settings page.
+    LifecycleResumeEffect(Unit) {
+        granted = ContextCompat.checkSelfPermission(camContext, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+        onPauseOrDispose { }
+    }
     LaunchedEffect(Unit) { if (!granted) launcher.launch(Manifest.permission.CAMERA) }
 
     if (!granted) {
@@ -78,7 +91,7 @@ fun LensScreen(vm: AppViewModel, onBack: () -> Unit, onPro: () -> Unit) {
             SweepCard {
                 Text(stringResource(R.string.camera_permission_title), style = MaterialTheme.typography.titleMedium)
                 Text(stringResource(R.string.camera_permission_body), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(vertical = 8.dp))
-                PrimaryButton(stringResource(R.string.allow), { launcher.launch(Manifest.permission.CAMERA) })
+                PrimaryButton(stringResource(R.string.allow), { userAsked = true; launcher.launch(Manifest.permission.CAMERA) })
             }
         }
         return

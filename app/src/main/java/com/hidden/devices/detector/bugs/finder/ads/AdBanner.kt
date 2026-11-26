@@ -29,7 +29,9 @@ fun AdBanner(isPro: Boolean, modifier: Modifier = Modifier) {
     if (isPro || !ready) return
     val context = LocalContext.current
     val widthDp = LocalConfiguration.current.screenWidthDp
-    val size = remember(widthDp) { AdSize.getLargeAnchoredAdaptiveBannerAdSize(context, widthDp) }
+    // Standard-height anchored adaptive banner (the "large" size was too tall).
+    @Suppress("DEPRECATION")
+    val size = remember(widthDp) { AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, widthDp) }
     val adView = remember(size) {
         AdView(context).apply {
             loadAd(
