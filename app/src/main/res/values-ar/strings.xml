@@ -191,6 +191,8 @@
     <string name="help_limits_body">لا يوجد تطبيق يجد كل الكاميرات. الكاميرا المطفأة أو غير المتصلة بالواي فاي أو التي تسجّل على بطاقة SD فقط قد لا تظهر في الفحص. اجمع دائمًا بين الفحص والتفتيش الدقيق للغرفة.</string>
     <string name="privacy_title">سياسة الخصوصية</string>
     <string name="pro_body">اشترك لفتح الميزات الإضافية. كل عمليات الفحص تبقى مجانية.</string>
+    <string name="pro_feature_no_ads">بدون إعلانات</string>
+    <string name="settings_privacy_options">خيارات الخصوصية (الإعلانات)</string>
     <string name="pro_feature_reports">احتفظ بكل التقارير، وليس آخر 3 فقط</string>
     <string name="pro_feature_share">شارك نتائج الفحص والتقارير</string>
     <string name="pro_feature_night">وضع العدسة بالأشعة تحت الحمراء الليلية</string>

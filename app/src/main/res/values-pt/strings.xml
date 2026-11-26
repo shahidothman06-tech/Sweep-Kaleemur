@@ -191,6 +191,8 @@
     <string name="help_limits_body">Nenhum app de celular encontra todas as câmeras. Uma câmera desligada, fora do Wi-Fi ou que grava só em cartão SD pode escapar das verificações. Sempre combine as verificações com uma inspeção cuidadosa do quarto.</string>
     <string name="privacy_title">Política de privacidade</string>
     <string name="pro_body">Assine para liberar os extras. Todas as verificações continuam grátis.</string>
+    <string name="pro_feature_no_ads">Sem anúncios</string>
+    <string name="settings_privacy_options">Opções de privacidade (anúncios)</string>
     <string name="pro_feature_reports">Guarde todos os relatórios, não só os últimos 3</string>
     <string name="pro_feature_share">Compartilhe resultados e relatórios</string>
     <string name="pro_feature_night">Modo de lente IR noturno</string>

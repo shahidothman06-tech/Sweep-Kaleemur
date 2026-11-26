@@ -191,6 +191,8 @@
     <string name="help_limits_body">Ninguna app puede encontrar todas las cámaras. Una cámara apagada, sin Wi-Fi o que graba solo en una tarjeta SD puede escapar a los escaneos. Combina siempre los escaneos con una revisión cuidadosa de la habitación.</string>
     <string name="privacy_title">Política de privacidad</string>
     <string name="pro_body">Suscríbete para desbloquear los extras. Todos los escaneos siguen siendo gratis.</string>
+    <string name="pro_feature_no_ads">Sin anuncios</string>
+    <string name="settings_privacy_options">Opciones de privacidad (anuncios)</string>
     <string name="pro_feature_reports">Guarda todos los informes, no solo los últimos 3</string>
     <string name="pro_feature_share">Comparte resultados e informes</string>
     <string name="pro_feature_night">Modo de lente IR nocturno</string>

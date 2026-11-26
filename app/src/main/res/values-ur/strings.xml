@@ -191,6 +191,8 @@
     <string name="help_limits_body">کوئی فون ایپ ہر کیمرا نہیں ڈھونڈ سکتی۔ بند کیمرا، وائی فائی پر نہ ہونے والا یا صرف SD کارڈ پر ریکارڈ کرنے والا کیمرا اسکین سے چھپ سکتا ہے۔ اسکین کے ساتھ ہمیشہ کمرے کو غور سے دیکھیں۔</string>
     <string name="privacy_title">پرائیویسی پالیسی</string>
     <string name="pro_body">اضافی فیچرز کے لیے سبسکرائب کریں۔ تمام اسکین مفت رہیں گے۔</string>
+    <string name="pro_feature_no_ads">کوئی اشتہار نہیں</string>
+    <string name="settings_privacy_options">پرائیویسی کے اختیارات (اشتہارات)</string>
     <string name="pro_feature_reports">تمام رپورٹس محفوظ رکھیں، صرف آخری 3 نہیں</string>
     <string name="pro_feature_share">اسکین نتائج اور رپورٹس شیئر کریں</string>
     <string name="pro_feature_night">نائٹ IR لینس موڈ</string>

@@ -191,6 +191,8 @@
     <string name="help_limits_body">Aucune app ne trouve toutes les caméras. Une caméra éteinte, hors Wi-Fi ou qui enregistre seulement sur une carte SD peut échapper aux analyses. Combinez toujours les analyses avec une inspection attentive de la pièce.</string>
     <string name="privacy_title">Politique de confidentialité</string>
     <string name="pro_body">Abonnez-vous pour débloquer les extras. Toutes les analyses restent gratuites.</string>
+    <string name="pro_feature_no_ads">Sans publicité</string>
+    <string name="settings_privacy_options">Options de confidentialité (pub)</string>
     <string name="pro_feature_reports">Gardez tous les rapports, pas seulement les 3 derniers</string>
     <string name="pro_feature_share">Partagez résultats et rapports</string>
     <string name="pro_feature_night">Mode objectif IR de nuit</string>

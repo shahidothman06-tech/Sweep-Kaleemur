@@ -4,6 +4,14 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import com.hidden.devices.detector.bugs.finder.ads.AdBanner
+import com.hidden.devices.detector.bugs.finder.ads.AdsManager
+import com.hidden.devices.detector.bugs.finder.ui.Actions.findActivity
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -77,6 +85,9 @@ object Routes {
     fun device(id: String) = "device/" + Uri.encode(id)
 }
 
+/** Screens that show the bottom banner ad. */
+private val AD_ROUTES = setOf(Routes.HOME, Routes.RESULTS, Routes.REPORTS)
+
 private data class Tab(val route: String, val label: Int, val icon: ImageVector)
 
 private val TABS = listOf(
@@ -98,13 +109,20 @@ fun SweepApp(vm: AppViewModel = viewModel()) {
 
     // Bluetooth permission is asked right before the first full scan. The scan runs either way;
     // without permission the Bluetooth step is just skipped.
+    // While a permission prompt is open, no ads show.
+    var askingPermission by rememberSaveable { mutableStateOf(false) }
     val blePermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+        askingPermission = false
         startScan(vm, nav)
     }
     val onStartScan = {
-        if (vm.ble.isSupported && !vm.ble.hasPermission()) blePermission.launch(BleScanner.requiredPermissions())
-        else startScan(vm, nav)
+        if (vm.ble.isSupported && !vm.ble.hasPermission()) {
+            askingPermission = true
+            blePermission.launch(BleScanner.requiredPermissions())
+        } else startScan(vm, nav)
     }
+    val context = LocalContext.current
+    val isPro by vm.billing.isPro.collectAsStateWithLifecycle()
     val back: () -> Unit = { nav.popBackStack() }
     val toPro: () -> Unit = { nav.navigate(Routes.PRO) }
 
@@ -112,7 +130,16 @@ fun SweepApp(vm: AppViewModel = viewModel()) {
         containerColor = Sweep.Bg,
         contentWindowInsets = WindowInsets.safeDrawing,
         snackbarHost = { SnackbarHost(snackbar) },
-        bottomBar = { if (TABS.any { it.route == route }) BottomBar(nav, route) },
+        bottomBar = {
+            Column {
+                // Banner only on Home, Results and Reports. Never on splash, scan, lens, paywall or during permission prompts.
+                val hasTabs = TABS.any { it.route == route }
+                if (route in AD_ROUTES && !askingPermission) {
+                    AdBanner(isPro, if (hasTabs) Modifier else Modifier.navigationBarsPadding())
+                }
+                if (hasTabs) BottomBar(nav, route)
+            }
+        },
     ) { padding ->
         Box(Modifier.fillMaxSize().padding(padding)) {
             NavHost(nav, startDestination = start) {
@@ -135,7 +162,14 @@ fun SweepApp(vm: AppViewModel = viewModel()) {
                     ScanScreen(
                         vm,
                         onBack = { vm.cancelScan(); nav.popBackStack() },
-                        onFinished = { nav.navigate(Routes.RESULTS) { popUpTo(Routes.SCAN) { inclusive = true } } },
+                        onFinished = {
+                            // One interstitial after a finished full scan, before the results (capped, never for Pro).
+                            AdsManager.showInterstitialThen(context.findActivity(), isPro) {
+                                if (nav.currentDestination?.route == Routes.SCAN) {
+                                    nav.navigate(Routes.RESULTS) { popUpTo(Routes.SCAN) { inclusive = true } }
+                                }
+                            }
+                        },
                     )
                 }
                 composable(Routes.RESULTS) {
