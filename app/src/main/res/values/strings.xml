@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Launcher name. The full Play Store title is app_full_name. Change both here if you pick another name. -->
-    <string name="app_name" translatable="false">Sweep</string>
+    <string name="app_name" translatable="false">Sweep: Hidden Camera Detector</string>
     <string name="app_full_name">Sweep: Hidden Camera Detector</string>
     <!-- Put your real support email here before publishing. -->
     <string name="support_email" translatable="false">support@example.com</string>

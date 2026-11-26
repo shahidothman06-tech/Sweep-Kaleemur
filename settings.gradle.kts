@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Sweep"
+rootProject.name = "Sweep-Kaleemur"
 include(":app")
