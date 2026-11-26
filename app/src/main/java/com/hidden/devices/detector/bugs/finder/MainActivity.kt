@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.hidden.devices.detector.bugs.finder.ads.AdsManager
 import com.hidden.devices.detector.bugs.finder.ui.SweepApp
 import com.hidden.devices.detector.bugs.finder.ui.theme.SweepTheme
 
@@ -22,5 +23,7 @@ class MainActivity : AppCompatActivity() {
             navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
         )
         setContent { SweepTheme { SweepApp() } }
+        // Consent first (Google UMP); the ads SDK starts and ads load only after consent allows it.
+        AdsManager.gatherConsent(this)
     }
 }

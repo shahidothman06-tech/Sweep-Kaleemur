@@ -2,33 +2,50 @@
 <!-- English only on purpose: a legal text should not be machine-translated. Not translated in values-xx. -->
 <resources>
     <string name="privacy_updated" translatable="false">Last updated: November 2026</string>
-    <string name="privacy_body" translatable="false">Sweep (\"Hidden Camera &amp; Bug Detector\") checks the room you are in for hidden cameras, trackers and other devices. This policy explains what the app does with your data.
+    <string name="privacy_body" translatable="false">Sweep (\"Sweep: Hidden Camera Detector\") checks the room you are in for hidden cameras, trackers and other devices. This policy explains what the app does with your data.
 
-1. Everything stays on your phone
-All scans run on your device. Scan results, reports and checklist progress are saved only on your phone. We do not have servers that receive them, and we cannot see them.
+1. Your scans stay on your phone
+All scans run on your device. Scan results, reports and checklist progress are saved only on your phone. We do not have servers that receive them, and we cannot see them. Scan results are never shared with advertisers.
 
 2. What we do not collect
-We do not collect your name, email, contacts, photos, location or any scan results. The app has no ads, no analytics and no tracking SDKs.
+We do not collect your name, email, contacts, photos, GPS location or any scan results. The app has no analytics SDK of its own.
 
-3. Permissions and why we ask
+3. Ads (Google AdMob)
+The free version shows ads from Google AdMob, a service of Google LLC. To show and measure ads, and to prevent fraud, the Google Mobile Ads SDK may collect and share with Google:
+• your device\'s advertising ID (you can reset or delete it in your phone settings: Settings > Google > Ads, or Settings > Privacy > Ads),
+• approximate device information (such as phone model, Android version, language and screen size) and app usage data related to ads (such as ads shown and tapped, and crash data of the ads SDK),
+• your IP address, which may be used to estimate your general (coarse) location, for example the country or city, for ads. The app itself never reads your GPS position for ads.
+Ads are shown on the Home, Results and Reports screens and, at most once every few minutes, as a full-screen ad after a finished scan. Ads are never shown while scanning, in the lens finder, or on the Pro screen.
+How Google uses this data: https://policies.google.com/technologies/partner-sites
+Google Privacy Policy: https://policies.google.com/privacy
+Google advertising policies and how ads work: https://policies.google.com/technologies/ads
+
+4. Your consent choices
+When required by law (for example in the European Economic Area, the UK and Switzerland, and in some US states), the app asks for your consent with Google\'s consent form before ads are loaded. You can choose personalized ads, non-personalized (limited) ads, or say no to the use of your data for personalized ads. You can change your choice at any time in Settings > Privacy options. You can also opt out of personalized ads in your Google account at https://adssettings.google.com. If you do not give consent where it is needed, you may still see limited, non-personalized ads.
+
+5. Remove ads with Sweep Pro
+Sweep Pro subscribers see no ads. With Pro, no ad is loaded and no ad request is sent.
+
+6. Permissions and why we ask
 • Camera: to show the live view in the lens finder. Pictures are not saved or sent anywhere.
-• Wi-Fi / network: to list devices on the Wi-Fi you are connected to and check if any of them look like cameras. This only talks to devices on your local network.
+• Wi-Fi / network: to list devices on the Wi-Fi you are connected to and check if any of them look like cameras. This only talks to devices on your local network. Internet access is also used to load ads and for Google Play purchases.
 • Bluetooth and location: Android requires the location permission to scan for nearby Bluetooth devices such as AirTags. The app never reads your GPS position.
 • Magnetic sensor: to measure magnetic fields near electronics. No permission is needed.
+• Advertising ID: used only by Google AdMob for ads, as described above.
 You can turn off any permission in your phone settings. The other tools keep working.
 
-4. Purchases
+7. Purchases
 Sweep Pro subscriptions are handled by Google Play. We do not see or store your payment details. Google\'s privacy policy applies to the payment: https://policies.google.com/privacy
 
-5. Ratings and feedback
+8. Ratings and feedback
 If you rate the app, Google Play handles it. If you send feedback by email, we use your email only to answer you.
 
-6. Children
+9. Children
 The app is not directed at children under 13 and does not knowingly collect data from them.
 
-7. Changes
+10. Changes
 If this policy changes, the new version will be in the app with a new date.
 
-8. Contact
+11. Contact
 Questions? Email us at the address below.</string>
 </resources>

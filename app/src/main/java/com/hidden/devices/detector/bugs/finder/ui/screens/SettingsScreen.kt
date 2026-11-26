@@ -19,6 +19,9 @@ import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.PrivacyTip
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material.icons.rounded.Tune
+import com.hidden.devices.detector.bugs.finder.ads.AdsManager
+import com.hidden.devices.detector.bugs.finder.ui.Actions.findActivity
 import androidx.compose.material.icons.rounded.WorkspacePremium
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -54,6 +57,7 @@ fun SettingsScreen(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val isPro by vm.billing.isPro.collectAsStateWithLifecycle()
+    val privacyOptions by AdsManager.privacyOptionsRequired.collectAsStateWithLifecycle()
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 8.dp)) {
         Text(
             stringResource(R.string.settings_title),
@@ -83,7 +87,13 @@ fun SettingsScreen(
             })
             SettingsRow(Icons.Rounded.Share, stringResource(R.string.settings_share), onClick = { Actions.shareApp(context) })
             SettingsRow(Icons.Rounded.Email, stringResource(R.string.settings_feedback), onClick = { Actions.sendFeedback(context) })
-            SettingsRow(Icons.Rounded.PrivacyTip, stringResource(R.string.settings_privacy), onClick = onPrivacy, divider = false)
+            SettingsRow(Icons.Rounded.PrivacyTip, stringResource(R.string.settings_privacy), onClick = onPrivacy, divider = privacyOptions)
+            // Required by Google's consent rules (e.g. EEA/UK users): lets the user change their ad consent choice.
+            if (privacyOptions) {
+                SettingsRow(Icons.Rounded.Tune, stringResource(R.string.settings_privacy_options), onClick = {
+                    context.findActivity()?.let { AdsManager.showPrivacyOptions(it) }
+                }, divider = false)
+            }
         }
 
         Spacer(Modifier.height(20.dp))

@@ -73,7 +73,7 @@ fun ProScreen(vm: AppViewModel, snackbar: SnackbarHostState, onBack: () -> Unit)
             )
             Spacer(Modifier.height(20.dp))
             SweepCard {
-                listOf(R.string.pro_feature_reports, R.string.pro_feature_share, R.string.pro_feature_night).forEach {
+                listOf(R.string.pro_feature_no_ads, R.string.pro_feature_reports, R.string.pro_feature_share, R.string.pro_feature_night).forEach {
                     Row(Modifier.padding(vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
                         Icon(Icons.Rounded.CheckCircle, null, tint = Sweep.Green, modifier = Modifier.size(20.dp))
                         Spacer(Modifier.width(10.dp))

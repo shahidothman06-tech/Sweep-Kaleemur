@@ -44,7 +44,17 @@ open class SsdpDiscovery(private val listenMs: Long = 3000) {
     protected open fun fetch(url: String): String? = runCatching {
         val c = URL(url).openConnection() as HttpURLConnection
         c.connectTimeout = 800; c.readTimeout = 1200
-        c.inputStream.use { it.readNBytes(32_000).toString(Charsets.UTF_8) }.also { c.disconnect() }
+        // Reads at most 32 KB. (InputStream.readNBytes needs Android 13, and minSdk is 26.)
+        c.inputStream.use { input ->
+            val buf = ByteArray(32_000)
+            var n = 0
+            while (n < buf.size) {
+                val r = input.read(buf, n, buf.size - n)
+                if (r < 0) break
+                n += r
+            }
+            String(buf, 0, n, Charsets.UTF_8)
+        }.also { c.disconnect() }
     }.getOrNull()
 
     companion object {

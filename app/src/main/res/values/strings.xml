@@ -217,6 +217,8 @@
 
     <string name="pro_title" translatable="false">Sweep Pro</string>
     <string name="pro_body">Subscribe to unlock the extras. All scans stay free.</string>
+    <string name="pro_feature_no_ads">No ads</string>
+    <string name="settings_privacy_options">Privacy options (ads)</string>
     <string name="pro_feature_reports">Keep every report, not just the last 3</string>
     <string name="pro_feature_share">Share scan results and reports</string>
     <string name="pro_feature_night">Night IR lens mode</string>

@@ -191,6 +191,8 @@
     <string name="help_limits_body">कोई भी फ़ोन ऐप हर कैमरा नहीं खोज सकता। बंद कैमरा, वाई-फ़ाई पर न होने वाला या सिर्फ़ SD कार्ड पर रिकॉर्ड करने वाला कैमरा स्कैन से छिप सकता है। स्कैन के साथ हमेशा कमरे को ध्यान से देखें।</string>
     <string name="privacy_title">निजता नीति</string>
     <string name="pro_body">अतिरिक्त सुविधाओं के लिए सब्सक्राइब करें। सभी स्कैन मुफ़्त रहेंगे।</string>
+    <string name="pro_feature_no_ads">कोई विज्ञापन नहीं</string>
+    <string name="settings_privacy_options">निजता विकल्प (विज्ञापन)</string>
     <string name="pro_feature_reports">सभी रिपोर्ट रखें, सिर्फ़ पिछली 3 नहीं</string>
     <string name="pro_feature_share">स्कैन नतीजे और रिपोर्ट शेयर करें</string>
     <string name="pro_feature_night">नाइट IR लेंस मोड</string>

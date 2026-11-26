@@ -58,6 +58,7 @@ class BillingManager(context: Context, private val prefs: Prefs) {
             }
         }
         .enablePendingPurchases(PendingPurchasesParams.newBuilder().enableOneTimeProducts().build())
+        .enableAutoServiceReconnection()
         .build()
 
     fun connect() {
