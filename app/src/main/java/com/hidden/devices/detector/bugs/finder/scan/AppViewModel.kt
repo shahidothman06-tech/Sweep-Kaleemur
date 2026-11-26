@@ -28,6 +28,8 @@ sealed interface StepStatus {
     data object Running : StepStatus
     data class Done(val count: Int) : StepStatus
     data object Skipped : StepStatus
+    /** Skipped because the user denied the permission this step needs. */
+    data object NoPermission : StepStatus
 }
 
 data class FullScanState(
@@ -140,7 +142,11 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     private suspend fun runBluetooth(): List<BleDevice> {
-        if (!ble.isSupported || !ble.isEnabled || !ble.hasPermission()) {
+        if (ble.isSupported && !ble.hasPermission()) {
+            _scan.update { it.copy(bt = StepStatus.NoPermission, btProgress = 1f) }
+            return emptyList()
+        }
+        if (!ble.isSupported || !ble.isEnabled) {
             _scan.update { it.copy(bt = StepStatus.Skipped, btProgress = 1f) }
             return emptyList()
         }

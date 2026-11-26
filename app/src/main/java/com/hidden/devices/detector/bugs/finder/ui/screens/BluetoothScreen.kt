@@ -2,6 +2,9 @@ package com.hidden.devices.detector.bugs.finder.ui.screens
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.LifecycleResumeEffect
+import com.hidden.devices.detector.bugs.finder.ui.Actions
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,7 +49,15 @@ import com.hidden.devices.detector.bugs.finder.ui.theme.Sweep
 @Composable
 fun BluetoothScreen(vm: AppViewModel, onBack: () -> Unit) {
     var granted by remember { mutableStateOf(vm.ble.hasPermission()) }
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { granted = vm.ble.hasPermission() }
+    // If the user taps Allow but Android no longer shows the prompt (denied twice), open the app settings instead.
+    val btContext = LocalContext.current
+    var userAsked by remember { mutableStateOf(false) }
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+        granted = vm.ble.hasPermission()
+        if (!granted && userAsked) Actions.openAppSettings(btContext)
+    }
+    // Re-check when coming back from the settings page.
+    LifecycleResumeEffect(Unit) { granted = vm.ble.hasPermission(); onPauseOrDispose { } }
     LaunchedEffect(Unit) { if (!granted) launcher.launch(BleScanner.requiredPermissions()) }
     var devices by remember { mutableStateOf<List<BleDevice>>(emptyList()) }
     LaunchedEffect(granted) { if (granted) vm.ble.scan().collect { devices = it } }
@@ -57,7 +68,7 @@ fun BluetoothScreen(vm: AppViewModel, onBack: () -> Unit) {
             !granted -> SweepCard {
                 Text(stringResource(R.string.bt_permission_title), style = MaterialTheme.typography.titleMedium)
                 Text(stringResource(R.string.bt_permission_body), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(vertical = 8.dp))
-                PrimaryButton(stringResource(R.string.allow), { launcher.launch(BleScanner.requiredPermissions()) })
+                PrimaryButton(stringResource(R.string.allow), { userAsked = true; launcher.launch(BleScanner.requiredPermissions()) })
             }
             !vm.ble.isEnabled -> SweepCard { Text(stringResource(R.string.bt_off), style = MaterialTheme.typography.bodyMedium) }
             else -> {

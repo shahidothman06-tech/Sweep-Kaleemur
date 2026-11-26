@@ -22,6 +22,14 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material3.TextButton
+import androidx.compose.ui.platform.LocalContext
+import com.hidden.devices.detector.bugs.finder.bluetooth.BleScanner
+import com.hidden.devices.detector.bugs.finder.ui.Actions
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -48,9 +56,17 @@ fun ScanScreen(vm: AppViewModel, onBack: () -> Unit, onFinished: () -> Unit) {
     val s by vm.scan.collectAsStateWithLifecycle()
     LaunchedEffect(s.finished, s.running) { if (s.finished && !s.running) onFinished() }
     val cancel = { vm.cancelScan(); onBack() }
+    // Bluetooth permission was denied: ask again, or open app settings if Android won't show the prompt any more.
+    val context = LocalContext.current
+    val btPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+        if (!vm.ble.hasPermission()) Actions.openAppSettings(context)
+    }
+    val grantBt = { btPermission.launch(BleScanner.requiredPermissions()) }
 
     Column(Modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 8.dp)) {
         TopBar(stringResource(R.string.scan_title), onBack = cancel)
+        // Scrolls on small screens / large fonts, so Cancel below always stays visible.
+        Column(Modifier.weight(1f).verticalScroll(rememberScrollState())) {
         Box(Modifier.fillMaxWidth().padding(vertical = 10.dp), contentAlignment = Alignment.Center) { Radar() }
         Spacer(Modifier.height(14.dp))
         Row(Modifier.fillMaxWidth()) {
@@ -68,16 +84,23 @@ fun ScanScreen(vm: AppViewModel, onBack: () -> Unit, onFinished: () -> Unit) {
         Spacer(Modifier.height(20.dp))
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             StepRow(stringResource(R.string.step_wifi), s.wifi, doneText = { stringResource(R.string.status_done_devices, it) }, skippedText = stringResource(R.string.status_no_wifi))
-            StepRow(stringResource(R.string.step_bt), s.bt, doneText = { stringResource(R.string.status_done_found, it) }, skippedText = stringResource(R.string.status_no_bt))
+            StepRow(stringResource(R.string.step_bt), s.bt, doneText = { stringResource(R.string.status_done_found, it) }, skippedText = stringResource(R.string.status_no_bt), onGrant = grantBt)
             StepRow(stringResource(R.string.step_magnet), s.magnet, doneText = { stringResource(R.string.status_done_ut, it) }, skippedText = stringResource(R.string.status_no_sensor))
         }
-        Spacer(Modifier.weight(1f))
-        GhostButton(stringResource(R.string.cancel), cancel, Modifier.padding(bottom = 16.dp))
+        Spacer(Modifier.height(16.dp))
+        }
+        GhostButton(stringResource(R.string.cancel), cancel, Modifier.padding(top = 8.dp, bottom = 16.dp))
     }
 }
 
 @Composable
-private fun StepRow(label: String, status: StepStatus, doneText: @Composable (Int) -> String, skippedText: String) {
+private fun StepRow(
+    label: String,
+    status: StepStatus,
+    doneText: @Composable (Int) -> String,
+    skippedText: String,
+    onGrant: (() -> Unit)? = null,
+) {
     SweepCard(padding = 14.dp) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(label, style = MaterialTheme.typography.bodyMedium.copy(color = Sweep.Text), modifier = Modifier.weight(1f))
@@ -86,6 +109,12 @@ private fun StepRow(label: String, status: StepStatus, doneText: @Composable (In
                 StepStatus.Running -> Pill(stringResource(R.string.status_scanning), Sweep.Accent)
                 is StepStatus.Done -> Pill(doneText(status.count), Sweep.Green, dot = true)
                 StepStatus.Skipped -> Pill(skippedText, Sweep.Amber)
+                StepStatus.NoPermission -> {
+                    Pill(stringResource(R.string.status_no_permission), Sweep.Amber)
+                    if (onGrant != null) {
+                        TextButton(onClick = onGrant) { Text(stringResource(R.string.grant_permission), color = Sweep.Accent) }
+                    }
+                }
             }
         }
     }
