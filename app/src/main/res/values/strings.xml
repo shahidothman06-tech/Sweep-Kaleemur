@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Launcher name. The full Play Store title is app_full_name. Change both here if you pick another name. -->
+    <string name="app_name" translatable="false">Sweep</string>
+    <string name="app_full_name">Sweep: Hidden Camera Detector</string>
+    <!-- Put your real support email here before publishing. -->
+    <string name="support_email" translatable="false">support@example.com</string>
+
+    <string name="back">Back</string>
+    <string name="cont">Continue</string>
+    <string name="cancel">Cancel</string>
+    <string name="later">Later</string>
+    <string name="allow">Allow</string>
+
+    <string name="nav_home">Home</string>
+    <string name="nav_checklist">Checklist</string>
+    <string name="nav_reports">Reports</string>
+    <string name="nav_settings">Settings</string>
+
+    <string name="home_greeting">Stay private</string>
+    <string name="home_scan_title">Scan this room</string>
+    <string name="home_scan_sub">Wi-Fi, Bluetooth and magnet check in one go</string>
+    <string name="home_start">Start full scan</string>
+    <string name="home_tools">Tools</string>
+    <string name="home_last_scan">Last scan: %1$s</string>
+    <string name="home_never">No scans yet</string>
+    <string name="tool_wifi">Wi-Fi scan</string>
+    <string name="tool_wifi_sub">Cameras on network</string>
+    <string name="tool_lens">Lens finder</string>
+    <string name="tool_lens_sub">Spot lens glint</string>
+    <string name="tool_bt">Bluetooth</string>
+    <string name="tool_bt_sub">Trackers and bugs</string>
+    <string name="tool_magnet">Magnet meter</string>
+    <string name="tool_magnet_sub">Find electronics</string>
+
+    <string name="scan_title">Scanning room</string>
+    <string name="scan_checking">Checking devices</string>
+    <string name="step_wifi">Wi-Fi network</string>
+    <string name="step_bt">Bluetooth nearby</string>
+    <string name="step_magnet">Magnetic field</string>
+    <string name="status_waiting">Waiting</string>
+    <string name="status_scanning">Scanning…</string>
+    <string name="status_done_devices">Done · %1$d devices</string>
+    <string name="status_done_found">Done · %1$d found</string>
+    <string name="status_done_ut">Done · %1$d µT</string>
+    <string name="status_no_wifi">Not on Wi-Fi</string>
+    <string name="status_no_bt">Bluetooth off</string>
+    <string name="status_no_sensor">No sensor</string>
+
+    <string name="results_title">Scan results</string>
+    <string name="results_cameras">Possible cameras: %1$d</string>
+    <string name="results_to_check">Devices to check: %1$d</string>
+    <string name="results_clear">No camera signs found</string>
+    <string name="results_note_found">These look like cameras. That doesn\'t prove they\'re recording. Find them in the room or ask the host.</string>
+    <string name="results_note_clear">Cameras that aren\'t on this Wi-Fi, or only record to an SD card, won\'t show here. Also do a lens check.</string>
+    <string name="pill_high">%1$d high</string>
+    <string name="pill_check">%1$d check</string>
+    <string name="pill_normal">%1$d normal</string>
+    <string name="filter_all">All %1$d</string>
+    <string name="filter_wifi">Wi-Fi %1$d</string>
+    <string name="filter_bt">Bluetooth %1$d</string>
+    <string name="results_empty_title">No scan yet</string>
+    <string name="results_empty_body">Run a full scan to see the devices around you.</string>
+    <string name="results_share">Share results</string>
+    <string name="results_share_text">Sweep room scan: %1$d possible cameras, %2$d devices to check, %3$d normal.</string>
+    <string name="source_wifi">Wi-Fi</string>
+    <string name="source_bt">Bluetooth</string>
+    <string name="source_magnet">Magnet sensor</string>
+    <string name="risk_high">Possible camera</string>
+    <string name="risk_medium">Check this</string>
+    <string name="risk_low">Looks normal</string>
+    <string name="unknown_device">Unknown device</string>
+    <string name="wifi_router">Wi-Fi router</string>
+    <string name="strong_field">Strong magnetic field</string>
+
+    <string name="reason_onvif">Answered as a network camera</string>
+    <string name="reason_camera_name">Name matches a camera (%1$s)</string>
+    <string name="reason_smart_home">Smart home device (%1$s). Some have cameras</string>
+    <string name="reason_rtsp">Video stream port is open</string>
+    <string name="reason_dahua">Dahua camera port is open</string>
+    <string name="reason_xmeye">XMeye/iCSee camera port is open</string>
+    <string name="reason_hikvision">Hikvision camera port is open</string>
+    <string name="reason_rtmp">Live streaming port is open</string>
+    <string name="reason_tuya">Tuya smart device port is open</string>
+    <string name="reason_onvif_port">Camera control port may be open</string>
+    <string name="reason_router">Your Wi-Fi router</string>
+    <string name="reason_no_signs">No camera signs found</string>
+    <string name="reason_this_phone">This phone</string>
+    <string name="reason_tracker">Item tracker. If it isn\'t yours, it may be following you</string>
+    <string name="reason_seen_long">Seen near you for %1$d min</string>
+    <string name="reason_hidden_name">Hidden name, strong signal</string>
+    <string name="reason_strong_field">%1$d µT above normal. Check the spot you were holding the phone</string>
+
+    <string name="bt_apple">Apple Find My tracker (AirTag)</string>
+    <string name="bt_tile">Tile tracker</string>
+    <string name="bt_smarttag">Samsung SmartTag</string>
+    <string name="bt_unnamed">No name device</string>
+    <string name="bt_distance">~%1$s m</string>
+
+    <string name="detail_title">Device</string>
+    <string name="detail_ip">IP address</string>
+    <string name="detail_maker">Maker</string>
+    <string name="detail_model">Model</string>
+    <string name="detail_ports">Open ports</string>
+    <string name="detail_found_by">Found by</string>
+    <string name="detail_signal">Signal</string>
+    <string name="detail_none">None</string>
+    <string name="detail_what_to_do">What to do</string>
+    <string name="detail_steps">1. Look near smoke detectors, clocks, chargers and TVs.\n2. Use Lens finder to spot the lens.\n3. Ask the host or report it to the booking site.</string>
+    <string name="detail_open_lens">Open Lens finder</string>
+    <string name="found_by_ports">Port check</string>
+    <string name="found_by_upnp" translatable="false">UPnP</string>
+    <string name="found_by_onvif" translatable="false">ONVIF</string>
+
+    <string name="lens_red">Red filter</string>
+    <string name="lens_night">Night IR</string>
+    <string name="lens_hint_title">Turn off the lights</string>
+    <string name="lens_hint_red">Move the phone slowly. A hidden lens shows as a sharp white or red sparkle that stays in the same spot.</string>
+    <string name="lens_hint_night">This uses the front camera, which often sees infrared. Look for glowing purple or white dots in a dark room.</string>
+    <string name="lens_flash_on">Flash on</string>
+    <string name="lens_flash_off">Flash off</string>
+    <string name="lens_no_flash">This camera has no flash</string>
+    <string name="camera_permission_title">Camera needed</string>
+    <string name="camera_permission_body">Sweep uses the camera only on this screen, to help you spot lenses. Nothing is recorded or uploaded.</string>
+
+    <string name="magnet_title">Magnet meter</string>
+    <string name="magnet_unit" translatable="false">µT</string>
+    <string name="magnet_normal_room">Normal room</string>
+    <string name="magnet_highest">Highest now</string>
+    <string name="magnet_status_normal">Normal level</string>
+    <string name="magnet_status_raised">Higher than normal</string>
+    <string name="magnet_status_strong">Strong field nearby</string>
+    <string name="magnet_tip">Move the top of the phone close to objects. The beep gets faster near electronics. Speakers and chargers also trigger it.</string>
+    <string name="magnet_reset">Reset baseline</string>
+    <string name="magnet_no_sensor">This phone has no magnetic sensor.</string>
+    <string name="sound_on">Sound on</string>
+    <string name="sound_off">Sound off</string>
+
+    <string name="bt_title">Bluetooth nearby</string>
+    <string name="bt_sub">Sorted by distance. Walk around: the bars grow as you get closer.</string>
+    <string name="bt_permission_title">Bluetooth access needed</string>
+    <string name="bt_permission_body">Android asks for Nearby devices and Location so the app can see trackers like AirTag. Sweep never reads your GPS position.</string>
+    <string name="bt_off">Turn on Bluetooth to scan.</string>
+    <string name="bt_searching">Searching for devices…</string>
+
+    <string name="checklist_title">Room checklist</string>
+    <string name="room_bedroom">Bedroom</string>
+    <string name="room_bathroom">Bathroom</string>
+    <string name="room_living">Living room</string>
+    <string name="checklist_save">Save report</string>
+    <string name="checklist_saved">Report saved</string>
+    <string name="chk_smoke">Smoke detector</string>
+    <string name="chk_smoke_hint">Look for a tiny hole or glint</string>
+    <string name="chk_clock">Alarm clock</string>
+    <string name="chk_clock_hint">Check the front panel</string>
+    <string name="chk_chargers">USB chargers</string>
+    <string name="chk_chargers_hint">Unplug ones you don\'t need</string>
+    <string name="chk_tv">TV and set-top box</string>
+    <string name="chk_tv_hint">Look at the frame around the screen</string>
+    <string name="chk_mirror">Mirror</string>
+    <string name="chk_mirror_hint">Fingernail test: no gap means two-way</string>
+    <string name="chk_vents">Air vents</string>
+    <string name="chk_vents_hint">Shine a light through the slots</string>
+    <string name="chk_frames">Picture frames</string>
+    <string name="chk_frames_hint">Check edges and corners</string>
+    <string name="chk_shower">Shower and fan</string>
+    <string name="chk_shower_hint">Check holes and gaps in the ceiling</string>
+    <string name="chk_hooks">Towel hooks and racks</string>
+    <string name="chk_hooks_hint">Look for a small lens or wire</string>
+    <string name="chk_speaker">Smart speakers</string>
+    <string name="chk_speaker_hint">Some have cameras. Unplug if unsure</string>
+    <string name="chk_plants">Plants and decor</string>
+    <string name="chk_plants_hint">Look inside pots and behind leaves</string>
+    <string name="chk_router">Router and TV box</string>
+    <string name="chk_router_hint">Look for extra lights or a lens</string>
+
+    <string name="reports_title">Reports</string>
+    <string name="reports_empty">No reports yet. Your scans and checklists are saved here.</string>
+    <string name="report_scan">Full scan</string>
+    <string name="report_checklist">Room checklist</string>
+    <string name="report_checklist_summary">%1$d of %2$d spots checked</string>
+    <string name="reports_clear">Clear all</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_rate">Rate us</string>
+    <string name="settings_share">Share app</string>
+    <string name="settings_privacy">Privacy policy</string>
+    <string name="settings_help">How it works</string>
+    <string name="settings_feedback">Send feedback</string>
+    <string name="settings_version">Version %1$s</string>
+    <string name="share_app_text">I use Sweep to check rooms for hidden cameras: %1$s</string>
+    <string name="language_title">Choose language</string>
+    <string name="language_system">Phone default</string>
+
+    <string name="rate_title">Enjoying Sweep?</string>
+    <string name="rate_body">Your rating helps other travelers find the app.</string>
+    <string name="rate_yes">Yes, rate it</string>
+    <string name="rate_no">Not really</string>
+    <string name="feedback_title">Tell us what to fix</string>
+    <string name="feedback_body">Send us an email. We read every message.</string>
+    <string name="feedback_send">Send email</string>
+
+    <string name="help_title">How it works</string>
+    <string name="help_wifi_title">Wi-Fi scan</string>
+    <string name="help_wifi_body">Checks every device on the Wi-Fi you\'re connected to. Devices that answer as cameras, use camera ports or have camera brand names are marked.</string>
+    <string name="help_lens_title">Lens finder</string>
+    <string name="help_lens_body">Camera lenses reflect light back. In a dark room, with the flash on and the red filter, a lens shows up as a small bright sparkle.</string>
+    <string name="help_bt_title">Bluetooth</string>
+    <string name="help_bt_body">Lists Bluetooth devices nearby and flags item trackers like AirTag, Tile and SmartTag.</string>
+    <string name="help_magnet_title">Magnet meter</string>
+    <string name="help_magnet_body">Electronics create a magnetic field. The meter rises when you move the phone close to one.</string>
+    <string name="help_limits_title">What no app can do</string>
+    <string name="help_limits_body">No phone app can find every camera. A camera that is switched off, not on Wi-Fi, or recording only to an SD card can hide from scans. Always combine the scans with a careful look around the room.</string>
+
+    <string name="privacy_title">Privacy policy</string>
+
+    <string name="pro_title" translatable="false">Sweep Pro</string>
+    <string name="pro_body">Subscribe to unlock the extras. All scans stay free.</string>
+    <string name="pro_feature_reports">Keep every report, not just the last 3</string>
+    <string name="pro_feature_share">Share scan results and reports</string>
+    <string name="pro_feature_night">Night IR lens mode</string>
+    <string name="pro_weekly">Weekly</string>
+    <string name="pro_monthly">Monthly</string>
+    <string name="pro_per_week">%1$s / week</string>
+    <string name="pro_per_month">%1$s / month</string>
+    <string name="pro_best_value">Best value</string>
+    <string name="pro_subscribe">Subscribe</string>
+    <string name="pro_cancel_note">Renews automatically. Cancel anytime in Google Play, Subscriptions.</string>
+    <string name="pro_manage">Manage subscription</string>
+    <string name="pro_restore">Restore purchase</string>
+    <string name="pro_owned">Pro is active. Thank you!</string>
+    <string name="pro_unavailable">The store isn\'t available right now. Try again later.</string>
+    <string name="pro_badge" translatable="false">PRO</string>
+    <string name="reports_free_limit">The free plan keeps your last 3 reports. Get Pro to keep all of them.</string>
+    <string name="settings_pro" translatable="false">Sweep Pro</string>
+    <string name="settings_pro_active">Active</string>
+    <string name="settings_section_app">App</string>
+    <string name="settings_section_about">About</string>
+    <string name="privacy_note">The policy below is in English.</string>
+    <string name="pro_choose_plan">Choose a plan</string>
+    <string name="pro_price_loading">Loading price…</string>
+    <string name="pro_restored">Purchases checked</string>
+    <string name="welcome_language">Pick the language for the app. You can change it later in Settings.</string>
+</resources>
