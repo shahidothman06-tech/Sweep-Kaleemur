@@ -30,6 +30,10 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarResult
+import com.hidden.devices.detector.bugs.finder.update.UpdateManager
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -98,9 +102,19 @@ private val TABS = listOf(
 )
 
 @Composable
-fun SweepApp(vm: AppViewModel = viewModel()) {
+fun SweepApp(vm: AppViewModel = viewModel(), updates: UpdateManager? = null) {
     val nav = rememberNavController()
     val snackbar = remember { SnackbarHostState() }
+    // A downloaded (flexible) Play update: offer a restart to install it.
+    val updateReady = updates?.readyToInstall?.collectAsStateWithLifecycle()?.value == true
+    val updateText = stringResource(R.string.update_ready)
+    val restartText = stringResource(R.string.update_restart)
+    LaunchedEffect(updateReady) {
+        if (updateReady) {
+            val r = snackbar.showSnackbar(updateText, actionLabel = restartText, duration = SnackbarDuration.Indefinite)
+            if (r == SnackbarResult.ActionPerformed) updates.completeUpdate()
+        }
+    }
     val askRating by vm.askRating.collectAsStateWithLifecycle()
     val entry by nav.currentBackStackEntryAsState()
     val route = entry?.destination?.route

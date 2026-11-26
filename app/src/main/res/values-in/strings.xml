@@ -215,6 +215,8 @@
     <string name="pro_choose_plan">Pilih paket</string>
     <string name="pro_price_loading">Memuat harga…</string>
     <string name="pro_restored">Pembelian sudah dicek</string>
+    <string name="update_ready">Pembaruan siap</string>
+    <string name="update_restart">Mulai ulang</string>
     <string name="pro_period_month">/ bulan</string>
     <string name="pro_period_week">/ minggu</string>
     <string name="pro_week_equiv">≈ %1$s / minggu</string>

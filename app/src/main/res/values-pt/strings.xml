@@ -215,6 +215,8 @@
     <string name="pro_choose_plan">Escolha um plano</string>
     <string name="pro_price_loading">Carregando preço…</string>
     <string name="pro_restored">Compras verificadas</string>
+    <string name="update_ready">Atualização pronta</string>
+    <string name="update_restart">Reiniciar</string>
     <string name="pro_period_month">/ mês</string>
     <string name="pro_period_week">/ semana</string>
     <string name="pro_week_equiv">≈ %1$s / semana</string>

@@ -215,6 +215,8 @@
     <string name="pro_choose_plan">پلان منتخب کریں</string>
     <string name="pro_price_loading">قیمت لوڈ ہو رہی ہے…</string>
     <string name="pro_restored">خریداریاں چیک ہو گئیں</string>
+    <string name="update_ready">اپ ڈیٹ تیار ہے</string>
+    <string name="update_restart">دوبارہ شروع کریں</string>
     <string name="pro_period_month">/ ماہانہ</string>
     <string name="pro_period_week">/ ہفتہ وار</string>
     <string name="pro_week_equiv">≈ %1$s / ہفتہ</string>

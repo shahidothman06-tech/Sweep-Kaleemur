@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.play.review.ktx)
+    implementation(libs.play.app.update.ktx)
     implementation(libs.billing.ktx)
     implementation(libs.ads.mobile.sdk)
     implementation(libs.ump)

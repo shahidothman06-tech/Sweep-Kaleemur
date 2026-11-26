@@ -243,6 +243,8 @@
     <string name="pro_choose_plan">Choose a plan</string>
     <string name="pro_price_loading">Loading price…</string>
     <string name="pro_restored">Purchases checked</string>
+    <string name="update_ready">Update ready</string>
+    <string name="update_restart">Restart</string>
     <string name="pro_period_month">/ month</string>
     <string name="pro_period_week">/ week</string>
     <string name="pro_week_equiv">≈ %1$s / week</string>
