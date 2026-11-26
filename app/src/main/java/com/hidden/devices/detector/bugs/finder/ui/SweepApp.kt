@@ -131,12 +131,12 @@ fun SweepApp(vm: AppViewModel = viewModel()) {
         contentWindowInsets = WindowInsets.safeDrawing,
         snackbarHost = { SnackbarHost(snackbar) },
         bottomBar = {
-            Column {
+            val hasTabs = TABS.any { it.route == route }
+            // The tab bar handles the system navigation bar itself. On other screens this bar is always at least
+            // as tall as the system navigation bar, so content (buttons) never goes under the phone's nav buttons.
+            Column(if (hasTabs) Modifier else Modifier.navigationBarsPadding()) {
                 // Banner only on Home, Results and Reports. Never on splash, scan, lens, paywall or during permission prompts.
-                val hasTabs = TABS.any { it.route == route }
-                if (route in AD_ROUTES && !askingPermission) {
-                    AdBanner(isPro, if (hasTabs) Modifier else Modifier.navigationBarsPadding())
-                }
+                if (route in AD_ROUTES && !askingPermission) AdBanner(isPro)
                 if (hasTabs) BottomBar(nav, route)
             }
         },
