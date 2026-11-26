@@ -196,7 +196,7 @@ fun SweepApp(vm: AppViewModel = viewModel()) {
                 composable(Routes.LANGUAGE) { LanguageScreen(vm, firstLaunch = false, onDone = back) }
                 composable(Routes.PRIVACY) { PrivacyScreen(onBack = back) }
                 composable(Routes.HELP) { HelpScreen(onBack = back) }
-                composable(Routes.PRO) { ProScreen(vm, snackbar, onBack = back) }
+                composable(Routes.PRO) { ProScreen(vm, snackbar, onBack = back, onPrivacy = { nav.navigate(Routes.PRIVACY) }) }
             }
         }
     }

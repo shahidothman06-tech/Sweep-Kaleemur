@@ -215,5 +215,18 @@
     <string name="pro_choose_plan">اختر خطة</string>
     <string name="pro_price_loading">جارٍ تحميل السعر…</string>
     <string name="pro_restored">تم التحقق من المشتريات</string>
+    <string name="pro_period_month">/ شهريًا</string>
+    <string name="pro_period_week">/ أسبوعيًا</string>
+    <string name="pro_week_equiv">≈ %1$s / أسبوع</string>
+    <string name="pro_trial_days">تجربة مجانية: %1$d أيام</string>
+    <string name="pro_continue">متابعة – %1$s</string>
+    <string name="pro_start_trial">ابدأ التجربة المجانية</string>
+    <string name="pro_terms">يمكنك الإلغاء في أي وقت من Google Play. يتجدد تلقائيًا بسعر %1$s حتى الإلغاء.</string>
+    <string name="pro_terms_trial">%1$d أيام مجانًا، ثم %2$s. يتجدد تلقائيًا حتى الإلغاء. يمكنك الإلغاء في أي وقت من Google Play.</string>
+    <string name="pro_link_restore">استعادة</string>
+    <string name="pro_link_manage">إدارة</string>
+    <string name="pro_link_privacy">الخصوصية</string>
+    <string name="pro_sideload_note">تظهر الأسعار بعد تثبيت التطبيق من Google Play.</string>
+    <string name="pro_active_title">أنت مشترك Pro</string>
     <string name="welcome_language">اختر لغة التطبيق. يمكنك تغييرها لاحقًا من الإعدادات.</string>
 </resources>

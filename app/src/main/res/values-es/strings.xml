@@ -215,5 +215,18 @@
     <string name="pro_choose_plan">Elige un plan</string>
     <string name="pro_price_loading">Cargando precio…</string>
     <string name="pro_restored">Compras revisadas</string>
+    <string name="pro_period_month">/ mes</string>
+    <string name="pro_period_week">/ semana</string>
+    <string name="pro_week_equiv">≈ %1$s / semana</string>
+    <string name="pro_trial_days">Prueba gratis: %1$d días</string>
+    <string name="pro_continue">Continuar – %1$s</string>
+    <string name="pro_start_trial">Empezar prueba gratis</string>
+    <string name="pro_terms">Cancela cuando quieras en Google Play. Se renueva automáticamente a %1$s hasta que canceles.</string>
+    <string name="pro_terms_trial">%1$d días gratis, luego %2$s. Se renueva automáticamente hasta que canceles. Cancela cuando quieras en Google Play.</string>
+    <string name="pro_link_restore">Restaurar</string>
+    <string name="pro_link_manage">Gestionar</string>
+    <string name="pro_link_privacy">Privacidad</string>
+    <string name="pro_sideload_note">Los precios aparecen cuando la app se instala desde Google Play.</string>
+    <string name="pro_active_title">Ya eres Pro</string>
     <string name="welcome_language">Elige el idioma de la app. Puedes cambiarlo luego en Ajustes.</string>
 </resources>

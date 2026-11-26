@@ -215,5 +215,18 @@
     <string name="pro_choose_plan">پلان منتخب کریں</string>
     <string name="pro_price_loading">قیمت لوڈ ہو رہی ہے…</string>
     <string name="pro_restored">خریداریاں چیک ہو گئیں</string>
+    <string name="pro_period_month">/ ماہانہ</string>
+    <string name="pro_period_week">/ ہفتہ وار</string>
+    <string name="pro_week_equiv">≈ %1$s / ہفتہ</string>
+    <string name="pro_trial_days">مفت آزمائش: %1$d دن</string>
+    <string name="pro_continue">جاری رکھیں – %1$s</string>
+    <string name="pro_start_trial">مفت آزمائش شروع کریں</string>
+    <string name="pro_terms">Google Play میں کسی بھی وقت منسوخ کریں۔ منسوخی تک %1$s پر خود بخود تجدید ہوتی ہے۔</string>
+    <string name="pro_terms_trial">%1$d دن مفت، پھر %2$s۔ منسوخی تک خود بخود تجدید ہوتی ہے۔ Google Play میں کسی بھی وقت منسوخ کریں۔</string>
+    <string name="pro_link_restore">بحال کریں</string>
+    <string name="pro_link_manage">منظم کریں</string>
+    <string name="pro_link_privacy">پرائیویسی</string>
+    <string name="pro_sideload_note">ایپ Google Play سے انسٹال ہونے کے بعد قیمتیں نظر آئیں گی۔</string>
+    <string name="pro_active_title">آپ Pro ہیں</string>
     <string name="welcome_language">ایپ کی زبان منتخب کریں۔ آپ اسے بعد میں سیٹنگز میں بدل سکتے ہیں۔</string>
 </resources>

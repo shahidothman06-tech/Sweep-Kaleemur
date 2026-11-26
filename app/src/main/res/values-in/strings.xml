@@ -215,5 +215,18 @@
     <string name="pro_choose_plan">Pilih paket</string>
     <string name="pro_price_loading">Memuat harga…</string>
     <string name="pro_restored">Pembelian sudah dicek</string>
+    <string name="pro_period_month">/ bulan</string>
+    <string name="pro_period_week">/ minggu</string>
+    <string name="pro_week_equiv">≈ %1$s / minggu</string>
+    <string name="pro_trial_days">Uji coba gratis: %1$d hari</string>
+    <string name="pro_continue">Lanjutkan – %1$s</string>
+    <string name="pro_start_trial">Mulai uji coba gratis</string>
+    <string name="pro_terms">Batalkan kapan saja di Google Play. Diperpanjang otomatis seharga %1$s sampai dibatalkan.</string>
+    <string name="pro_terms_trial">Gratis %1$d hari, lalu %2$s. Diperpanjang otomatis sampai dibatalkan. Batalkan kapan saja di Google Play.</string>
+    <string name="pro_link_restore">Pulihkan</string>
+    <string name="pro_link_manage">Kelola</string>
+    <string name="pro_link_privacy">Privasi</string>
+    <string name="pro_sideload_note">Harga muncul setelah aplikasi diinstal dari Google Play.</string>
+    <string name="pro_active_title">Anda sudah Pro</string>
     <string name="welcome_language">Pilih bahasa aplikasi. Anda bisa mengubahnya nanti di Setelan.</string>
 </resources>

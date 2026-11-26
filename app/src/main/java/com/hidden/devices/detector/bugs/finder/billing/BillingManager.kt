@@ -26,6 +26,21 @@ import kotlinx.coroutines.launch
 
 enum class ProPlan(val basePlanId: String) { WEEKLY("weekly"), MONTHLY("monthly") }
 
+/** One plan's price from Play. [trialDays] is set when the offer starts with a free trial. */
+data class PlanInfo(
+    val price: String,
+    val priceMicros: Long,
+    val currencyCode: String,
+    val trialDays: Int? = null,
+)
+
+/** Days in an ISO 8601 period like "P3D", "P1W" or "P1M" (a month counts as 30 days). */
+fun isoPeriodDays(period: String): Int {
+    val m = Regex("""P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?""").matchEntire(period) ?: return 0
+    val (y, mo, w, d) = m.destructured
+    return (y.toIntOrNull() ?: 0) * 365 + (mo.toIntOrNull() ?: 0) * 30 + (w.toIntOrNull() ?: 0) * 7 + (d.toIntOrNull() ?: 0)
+}
+
 /**
  * Google Play Billing for the "Sweep Pro" subscription.
  *
@@ -45,9 +60,9 @@ class BillingManager(context: Context, private val prefs: Prefs) {
     private val _isPro = MutableStateFlow(prefs.isProCached)
     val isPro: StateFlow<Boolean> = _isPro.asStateFlow()
 
-    private val _prices = MutableStateFlow<Map<ProPlan, String>>(emptyMap())
-    /** Localized prices from Play, like "$1.99". Empty until loaded or if the store is unavailable. */
-    val prices: StateFlow<Map<ProPlan, String>> = _prices.asStateFlow()
+    private val _plans = MutableStateFlow<Map<ProPlan, PlanInfo>>(emptyMap())
+    /** Prices and trial info from Play. Empty until loaded or if the store is unavailable (e.g. a sideloaded build). */
+    val plans: StateFlow<Map<ProPlan, PlanInfo>> = _plans.asStateFlow()
 
     private var details: ProductDetails? = null
 
@@ -87,8 +102,17 @@ class BillingManager(context: Context, private val prefs: Prefs) {
         ).build()
         val d = client.queryProductDetails(params).productDetailsList?.firstOrNull()
         details = d
-        _prices.value = ProPlan.entries.mapNotNull { plan ->
-            offerFor(d, plan)?.pricingPhases?.pricingPhaseList?.lastOrNull()?.formattedPrice?.let { plan to it }
+        _plans.value = ProPlan.entries.mapNotNull { plan ->
+            val phases = offerFor(d, plan)?.pricingPhases?.pricingPhaseList ?: return@mapNotNull null
+            // The last phase is the regular recurring price; a free first phase is a free trial.
+            val regular = phases.lastOrNull() ?: return@mapNotNull null
+            val trial = phases.firstOrNull { it.priceAmountMicros == 0L }
+            plan to PlanInfo(
+                price = regular.formattedPrice,
+                priceMicros = regular.priceAmountMicros,
+                currencyCode = regular.priceCurrencyCode,
+                trialDays = trial?.let { isoPeriodDays(it.billingPeriod) * maxOf(1, it.billingCycleCount) },
+            )
         }.toMap()
     }
 
