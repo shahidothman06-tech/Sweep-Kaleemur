@@ -20,6 +20,7 @@ import androidx.compose.material.icons.rounded.PrivacyTip
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.Tune
+import androidx.compose.material.icons.rounded.SystemUpdate
 import com.hidden.devices.detector.bugs.finder.ads.AdsManager
 import com.hidden.devices.detector.bugs.finder.ui.Actions.findActivity
 import androidx.compose.material.icons.rounded.WorkspacePremium
@@ -53,6 +54,7 @@ fun SettingsScreen(
     onPro: () -> Unit,
     onPrivacy: () -> Unit,
     onHelp: () -> Unit,
+    onCheckUpdates: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -76,7 +78,8 @@ fun SettingsScreen(
         Section(stringResource(R.string.settings_section_app))
         SweepCard(padding = 4.dp) {
             SettingsRow(Icons.Rounded.Language, stringResource(R.string.settings_language), value = currentLanguageName(), onClick = onLanguage)
-            SettingsRow(Icons.AutoMirrored.Rounded.HelpOutline, stringResource(R.string.settings_help), onClick = onHelp, divider = false)
+            SettingsRow(Icons.AutoMirrored.Rounded.HelpOutline, stringResource(R.string.settings_help), onClick = onHelp)
+            SettingsRow(Icons.Rounded.SystemUpdate, stringResource(R.string.settings_check_updates), onClick = onCheckUpdates, divider = false)
         }
 
         Section(stringResource(R.string.settings_section_about))
